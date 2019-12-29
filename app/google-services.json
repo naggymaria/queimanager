@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "505513140457",
+    "firebase_url": "https://carmanager-77e0c.firebaseio.com",
+    "project_id": "carmanager-77e0c",
+    "storage_bucket": "carmanager-77e0c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505513140457:android:070447d8cd3724923b9078",
+        "android_client_info": {
+          "package_name": "com.example.carmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "505513140457-kk2cptjkneko4449op9nnpo8ae3tt4u3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGwup35MHFs_SJcrYfjZ11IGVYJigxh00"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "505513140457-kk2cptjkneko4449op9nnpo8ae3tt4u3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
