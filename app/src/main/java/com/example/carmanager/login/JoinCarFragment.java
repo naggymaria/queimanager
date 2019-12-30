@@ -6,10 +6,12 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.example.carmanager.R;
 import com.facebook.CallbackManager;
@@ -37,6 +39,7 @@ public class JoinCarFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private ImageButton buttonBack;
 
     private OnFragmentInteractionListener mListener;
     private CallbackManager callbackManager = CallbackManager.Factory.create();
@@ -73,7 +76,21 @@ public class JoinCarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_join_car, container, false);
+        View view = inflater.inflate(R.layout.fragment_join_car, container, false);
+
+        buttonBack = view.findViewById(R.id.buttonBack);
+
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FrontPageFragment frontPageFragment = FrontPageFragment.newInstance("","");
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.layout, frontPageFragment, "frontPage");
+                fragmentTransaction.commit();
+            }
+        });
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
