@@ -25,6 +25,7 @@ import com.facebook.GraphResponse;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.common.util.SharedPreferencesUtils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -34,6 +35,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.Base64;
 import android.util.Log;
@@ -74,8 +76,14 @@ public class MainActivity extends AppCompatActivity implements FrontPageFragment
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        String carCode = getIntent().getStringExtra("carCode");
+                        final String carCode = getIntent().getStringExtra("carCode");
                         String personName = getIntent().getStringExtra("personName");
+
+                        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("sp", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+
+                        editor.putString("carCode", carCode);
+                        editor.apply();
 
                         personInterface = API.getClient().create(PersonInterface.class);
 

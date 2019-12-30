@@ -1,6 +1,8 @@
 package com.example.carmanager.login;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -12,13 +14,23 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.example.carmanager.R;
+import com.example.carmanager.menu.MainMenuActivity;
+import com.example.carmanager.services.API;
+import com.example.carmanager.services.interfaces.PersonInterface;
+import com.example.carmanager.services.model.Person;
 import com.facebook.CallbackManager;
 
 import java.util.Objects;
+import java.util.Random;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +54,10 @@ public class JoinCarFragment extends Fragment {
     private String personNameAux;
     private EditText carCode;
     private String carCodeAux;
+
+    private Button createPersonButton;
+
+    private PersonInterface personInterface;
 
     private OnFragmentInteractionListener mListener;
     private CallbackManager callbackManager = CallbackManager.Factory.create();
@@ -93,6 +109,8 @@ public class JoinCarFragment extends Fragment {
             }
         });
 
+        createPersonButton = view.findViewById(R.id.createPerson);
+
         carCode = view.findViewById(R.id.carCode);
         personName = view.findViewById(R.id.carName);
 
@@ -129,6 +147,37 @@ public class JoinCarFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 personNameAux = s.toString();
                 Objects.requireNonNull(getActivity()).getIntent().putExtra("personName", personNameAux);
+            }
+        });
+
+        createPersonButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                personInterface = API.getClient().create(PersonInterface.class);
+                Random rand = new Random();
+                Person p = new Person();
+                p.admin = false;
+                p.personName = personNameAux;
+
+                SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences("sp", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+
+                editor.putString("carCode", carCodeAux);
+                editor.apply();
+
+                Call<String> call = personInterface.createPerson(p, carCodeAux);
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        Intent intent = new Intent(getActivity().getApplicationContext(), MainMenuActivity.class);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+
+                    }
+                });
             }
         });
 

@@ -2,6 +2,7 @@ package com.example.carmanager.login;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -219,6 +220,12 @@ public class CreateCarFragment extends Fragment {
                 c.code = Integer.toString(rand.nextInt(10000));
                 carCodeAux = c.code;
                 Objects.requireNonNull(getActivity()).getIntent().putExtra("carCode", c.code);
+
+                SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences("sp", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+
+                editor.putString("carCode", carCodeAux);
+                editor.apply();
 
                 //chamada a API para criar um carro
                 Call<String> call = carInterface.createCar(c);

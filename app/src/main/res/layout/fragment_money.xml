@@ -10,6 +10,7 @@
         android:id="@+id/bottomNavigationView"
         android:layout_width="409dp"
         android:layout_height="100dp"
+        android:background="#0F000000"
         android:foregroundTint="#008D1818"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

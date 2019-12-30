@@ -1,18 +1,31 @@
 package com.example.carmanager.menu.fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.carmanager.R;
+import com.example.carmanager.menu.MainMenuActivity;
+import com.example.carmanager.services.API;
+import com.example.carmanager.services.interfaces.CarInterface;
+import com.example.carmanager.services.interfaces.PersonInterface;
+import com.example.carmanager.services.model.Car;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +48,10 @@ public class MoneyFragment extends Fragment {
     private ImageButton buttonMoneyMenu;
     private ImageButton buttonCardMenu;
     private ImageButton buttonCardHistoryMenu;
+    private TextView carRevenue;
+    private String carCode;
+
+    private CarInterface carInterface;
 
     private OnFragmentInteractionListener mListener;
 
@@ -121,6 +138,25 @@ public class MoneyFragment extends Fragment {
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.layout, cardsHistoryFragment, "cardsHistoryFragment");
                 fragmentTransaction.commit();
+            }
+        });
+
+        carRevenue = view.findViewById(R.id.carRevenue);
+
+        SharedPreferences sharedPref = getActivity().getApplicationContext().getSharedPreferences("sp", Context.MODE_PRIVATE);
+        carCode = sharedPref.getString("carCode", "0");
+        carInterface = API.getClient().create(CarInterface.class);
+        Call<Car> call = carInterface.getCarByCode(carCode);
+        call.enqueue(new Callback<Car>() {
+            @Override
+            public void onResponse(Call<Car> call, Response<Car> response) {
+                if(response.isSuccessful())
+                    carRevenue.setText(response.body().amount + " $");
+            }
+
+            @Override
+            public void onFailure(Call<Car> call, Throwable t) {
+
             }
         });
 
