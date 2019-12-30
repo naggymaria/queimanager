@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -12,8 +13,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.carmanager.R;
+import com.example.carmanager.services.API;
+import com.example.carmanager.services.interfaces.EventInterface;
+import com.example.carmanager.services.model.Event;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +49,9 @@ public class CardsFragment extends Fragment {
     private ImageButton buttonCardHistoryMenu;
 
     private OnFragmentInteractionListener mListener;
+
+    private EventInterface eventInterface;
+    private TextView textView;
 
     public CardsFragment() {
         // Required empty public constructor
@@ -122,6 +136,22 @@ public class CardsFragment extends Fragment {
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.layout, cardsHistoryFragment, "cardsHistoryFragment");
                 fragmentTransaction.commit();
+            }
+        });
+
+        textView = view.findViewById(R.id.textView3);
+
+        eventInterface = API.getClient().create(EventInterface.class);
+        Call<List<Event>> call = eventInterface.getAllEventsByCarId(1L);
+
+        call.enqueue(new Callback<List<Event>>() {
+            @Override
+            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+            }
+
+            @Override
+            public void onFailure(Call<List<Event>> call, Throwable t) {
+
             }
         });
 

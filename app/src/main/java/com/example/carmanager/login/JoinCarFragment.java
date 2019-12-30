@@ -1,26 +1,24 @@
 package com.example.carmanager.login;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.example.carmanager.R;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +38,10 @@ public class JoinCarFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private ImageButton buttonBack;
+    private EditText personName;
+    private String personNameAux;
+    private EditText carCode;
+    private String carCodeAux;
 
     private OnFragmentInteractionListener mListener;
     private CallbackManager callbackManager = CallbackManager.Factory.create();
@@ -75,6 +77,7 @@ public class JoinCarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_join_car, container, false);
 
@@ -87,6 +90,45 @@ public class JoinCarFragment extends Fragment {
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.layout, frontPageFragment, "frontPage");
                 fragmentTransaction.commit();
+            }
+        });
+
+        carCode = view.findViewById(R.id.carCode);
+        personName = view.findViewById(R.id.carName);
+
+        carCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                carCodeAux = s.toString();
+                Objects.requireNonNull(getActivity()).getIntent().putExtra("carCode", carCodeAux);
+            }
+        });
+
+        personName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                personNameAux = s.toString();
+                Objects.requireNonNull(getActivity()).getIntent().putExtra("personName", personNameAux);
             }
         });
 

@@ -22,28 +22,28 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/carName4"
+        android:id="@+id/carName"
         android:layout_width="265dp"
         android:layout_height="47dp"
         android:layout_marginTop="52dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Nome do Carro"
+        android:text="Nome Próprio"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView13" />
 
     <EditText
-        android:id="@+id/carName5"
+        android:id="@+id/carCode"
         android:layout_width="265dp"
         android:layout_height="47dp"
         android:layout_marginTop="24dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Nome do Carro"
+        android:text="Código do Carro"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/carName4" />
+        app:layout_constraintTop_toBottomOf="@+id/carName" />
 
     <ImageView
         android:id="@+id/imageView13"
@@ -66,7 +66,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/carName5"
+        app:layout_constraintTop_toBottomOf="@+id/carCode"
         app:layout_constraintVertical_bias="0.122" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

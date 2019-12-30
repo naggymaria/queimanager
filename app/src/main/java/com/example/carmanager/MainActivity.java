@@ -10,11 +10,18 @@ import com.example.carmanager.login.CreateCarFragment;
 import com.example.carmanager.login.FrontPageFragment;
 import com.example.carmanager.login.JoinCarFragment;
 import com.example.carmanager.menu.MainMenuActivity;
+import com.example.carmanager.services.API;
+import com.example.carmanager.services.interfaces.CarInterface;
+import com.example.carmanager.services.interfaces.PersonInterface;
+import com.example.carmanager.services.model.Car;
+import com.example.carmanager.services.model.Person;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
@@ -33,17 +40,32 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicReference;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements FrontPageFragment.OnFragmentInteractionListener, JoinCarFragment.OnFragmentInteractionListener, CreateCarFragment.OnFragmentInteractionListener {
 
     private CallbackManager callbackManager = CallbackManager.Factory.create();
+    private PersonInterface personInterface;
+    private CarInterface carInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
 
         FacebookSdk.fullyInitialize();
         AppEventsLogger.activateApp(this.getApplication());
@@ -52,10 +74,29 @@ public class MainActivity extends AppCompatActivity implements FrontPageFragment
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        // App code
-                        System.out.println("Fiz Login");
-                        Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
-                        startActivity(intent);
+                        String carCode = getIntent().getStringExtra("carCode");
+                        String personName = getIntent().getStringExtra("personName");
+
+                        personInterface = API.getClient().create(PersonInterface.class);
+
+                        Person p = new Person();
+                        p.code = loginResult.getAccessToken().getUserId();
+                        p.admin = false;
+                        p.personName = personName;
+
+                        Call<String> call = personInterface.createPerson(p, carCode);
+                        call.enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+
+                            }
+                        });
                     }
 
                     @Override
